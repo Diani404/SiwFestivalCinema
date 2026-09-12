@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Proiezioni</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<div class="testata">
+			<h1 th:text="'Proiezioni di ' + ${festival.name} + ' ' + ${festival.year}">Proiezioni</h1>
+			<a class="bottone bottone-secondario" th:href="@{'/festivals/' + ${festival.id}}">Torna al festival</a>
+			<a class="bottone" th:href="@{'/admin/festivals/' + ${festival.id} + '/screenings/new'}">Programma una proiezione</a>
+		</div>
+
+		<div class="blocco" th:if="${screenings.isEmpty()}">Nessuna proiezione programmata</div>
+
+		<div class="blocco" th:unless="${screenings.isEmpty()}">
+			<table class="lista">
+				<thead>
+					<tr>
+						<th>Data</th><th>Ora</th><th>Film</th><th>Sala</th><th>Stato</th><th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="s : ${screenings.content}">
+						<td th:text="${#temporals.format(s.date, 'dd/MM/yyyy')}">data</td>
+						<td th:text="${#temporals.format(s.time, 'HH:mm')}">ora</td>
+						<td th:text="${s.movie.title}">film</td>
+						<td th:text="${s.room.name}">sala</td>
+						<td><span class="stato" th:classappend="'stato-' + ${#strings.toLowerCase(s.status)}" th:text="#{${'status.' + s.status}}">stato</span></td>
+						<td>
+							<a th:href="@{'/admin/screenings/' + ${s.id} + '/edit'}">Modifica</a>
+							<form th:action="@{'/admin/screenings/' + ${s.id} + '/delete'}" method="POST">
+								<button type="submit" class="bottone-pericolo bottone-piccolo">Elimina</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div th:replace="~{fragments/paginazione :: paginazione(${screenings}, '/admin/festivals/' + ${festival.id} + '/screenings?', 'page')}"></div>
+		</div>
+	</main>
+</body>
+</html>

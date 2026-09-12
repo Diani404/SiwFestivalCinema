@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Sale</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+
+	<main class="contenitore">
+
+        <div class="testata">
+            <h1>Sale</h1>
+            <a class="bottone" href="/admin/rooms/new">Aggiungi una sala</a>
+        </div>
+
+		<div class="blocco" th:if="${rooms.isEmpty()}">Non ci sono sale nel sistema</div>
+
+		<div class="blocco" th:unless="${rooms.isEmpty()}">
+			<table class="lista">
+				<thead>
+					<tr>
+						<th>Nome</th><th>Indirizzo</th><th>Capienza</th><th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="room : ${rooms.content}">
+						<td th:text="${room.name}">Nome</td>
+						<td th:text="${room.address}">Indirizzo</td>
+						<td th:text="${room.capacity}">Capienza</td>
+						<td><a th:href="@{'/admin/rooms/' + ${room.id} + '/edit'}">Modifica</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div th:replace="~{fragments/paginazione :: paginazione(${rooms}, '/admin/rooms?', 'page')}"></div>
+	</main>
+</body>
+</html>

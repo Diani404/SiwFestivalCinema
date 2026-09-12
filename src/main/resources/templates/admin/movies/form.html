@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Film</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${movie.id == null} ? 'Aggiungi un film' : 'Modifica film'">Film</h1>
+
+		<div class="blocco blocco-stretto">
+			<form class="modulo" th:action="@{/admin/movies}" method="POST" th:object="${movie}">
+				<input type="hidden" th:field="*{id}" />
+				<div class="error" th:if="${#fields.hasGlobalErrors()}">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">errore</p>
+				</div>
+				<div class="campo">
+					<label>Titolo</label>
+					<input type="text" th:field="*{title}" />
+					<span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+				</div>
+				<div class="campo">
+					<label>Anno</label>
+					<input type="text" th:field="*{year}" />
+					<span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
+				</div>
+				<div class="campo">
+					<label>Durata (min)</label>
+					<input type="text" th:field="*{duration}" />
+					<span class="error" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></span>
+				</div>
+				<div class="campo">
+					<label>Genere</label>
+					<input type="text" th:field="*{genre}" />
+					<span class="error" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></span>
+				</div>
+				<div class="campo">
+					<label>Paese</label>
+					<input type="text" th:field="*{productionCountry}" />
+					<span class="error" th:if="${#fields.hasErrors('productionCountry')}" th:errors="*{productionCountry}"></span>
+				</div>
+				<div class="campo">
+					<label>Regista</label>
+					<select th:field="*{director}">
+						<option value="">Seleziona un regista</option>
+						<option th:each="director : ${directors}" th:value="${director.id}" th:text="${director.fullName}">regista</option>
+					</select>
+					<span class="error" th:if="${#fields.hasErrors('director')}" th:errors="*{director}"></span>
+				</div>
+				<div class="campo">
+					<button type="submit">Conferma</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Festival</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${festival.id == null} ? 'Crea un festival' : 'Modifica festival'">Festival</h1>
+
+		<div class="blocco blocco-stretto">
+			<!-- enctype multipart: obbligatorio per inviare un file insieme ai campi -->
+			<form class="modulo" th:action="@{/admin/festivals}" method="POST" th:object="${festival}" enctype="multipart/form-data">
+				<input type="hidden" th:field="*{id}" />
+				<div class="error" th:if="${#fields.hasGlobalErrors()}">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">errore</p>
+				</div>
+				<div class="campo">
+					<label>Nome</label>
+					<input type="text" th:field="*{name}" />
+					<span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+				</div>
+				<div class="campo">
+					<label>Anno</label>
+					<input type="text" th:field="*{year}" />
+					<span class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
+				</div>
+				<div class="campo">
+					<label>Citta'</label>
+					<input type="text" th:field="*{city}" />
+					<span class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+				</div>
+				<div class="campo">
+					<label>Data inizio</label>
+					<input type="date" th:field="*{startDate}" />
+					<span class="error" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
+				</div>
+				<div class="campo">
+					<label>Data fine</label>
+					<input type="date" th:field="*{endDate}" />
+					<span class="error" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
+				</div>
+				<div class="campo">
+					<label>Descrizione</label>
+					<textarea rows="4" th:field="*{description}"></textarea>
+					<span class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+				</div>
+				<div class="campo">
+					<label>Locandina</label>
+					<img th:if="${festival.posterFileName != null}" class="locandina" alt="locandina attuale"
+						th:src="@{'/uploads/' + ${festival.posterFileName}}" style="display: block; margin-bottom: 0.5em;" />
+					<input type="file" name="poster" accept="image/*" />
+					<span class="testo-tenue" th:if="${festival.posterFileName != null}">Scegli un file solo se vuoi sostituire la locandina attuale</span>
+				</div>
+				<div class="campo">
+					<button type="submit">Conferma</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

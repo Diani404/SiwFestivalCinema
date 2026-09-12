@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Film del festival</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="'Film di ' + ${festival.name} + ' ' + ${festival.year}">Film del festival</h1>
+		<p><a th:href="@{'/festivals/' + ${festival.id}}">Torna al festival</a></p>
+
+		<div class="blocco">
+			<h2>Associa un film</h2>
+			<p class="error" th:if="${errorMessage != null}" th:text="${errorMessage}">errore</p>
+			<form class="modulo-inline" th:action="@{'/admin/festivals/' + ${festival.id} + '/movies'}" method="POST">
+				<div class="campo">
+					<select name="movieId" required>
+						<option value="">-- Seleziona un film --</option>
+						<option th:each="movie : ${allMovies}" th:value="${movie.id}" th:text="${movie.title + ' (' + movie.year + ')'}">film</option>
+					</select>
+				</div>
+				<button type="submit">Associa</button>
+			</form>
+		</div>
+
+		<div class="blocco">
+			<h2>Film associati</h2>
+			<div th:if="${movies.isEmpty()}">Nessun film associato</div>
+			<table class="lista" th:unless="${movies.isEmpty()}">
+				<thead>
+					<tr>
+						<th>Titolo</th><th>Regista</th><th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="movie : ${movies.content}">
+						<td><a th:href="@{'/movies/' + ${movie.id}}" th:text="${movie.title}">titolo</a></td>
+						<td th:text="${movie.director.fullName}">regista</td>
+						<td>
+							<form th:action="@{'/admin/festivals/' + ${festival.id} + '/movies/' + ${movie.id} + '/remove'}" method="POST">
+								<button type="submit" class="bottone-pericolo bottone-piccolo">Rimuovi</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div th:replace="~{fragments/paginazione :: paginazione(${movies}, '/admin/festivals/' + ${festival.id} + '/movies?', 'page')}"></div>
+		</div>
+	</main>
+</body>
+</html>

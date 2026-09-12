@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Festival Cinema - Homepage</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+        <h1>Festival in corso</h1>
+
+        <div class="blocco" th:if="${festivals.isEmpty()}">
+            <p>In questo momento non c'e' nessun festival in corso.</p>
+            <a class="bottone" href="/festivals">Vedi tutti i festival</a>
+        </div>
+
+		<div class="blocco" th:if="${festivals.isEmpty()}">Non ci sono ancora Festival nel sistema</div>
+
+		<div class="griglia">
+			<a class="blocco riquadro" th:each="festival : ${festivals.content}" th:href="@{'/festivals/' + ${festival.id}}">
+				<img class="locandina" alt="locandina"
+					th:src="${festival.posterFileName != null} ? @{'/uploads/' + ${festival.posterFileName}} : @{/images/locandina-placeholder.png}" />
+				<h3 th:text="${festival.name + ' ' + festival.year}">festival</h3>
+				<p class="testo-tenue">
+					<span th:text="${festival.city}">citta'</span><br />
+					<span th:text="${#temporals.format(festival.startDate, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(festival.endDate, 'dd/MM/yyyy')}">periodo</span>
+				</p>
+				<p th:text="${#strings.abbreviate(festival.description, 160)}">descrizione</p>
+			</a>
+		</div>
+
+		<div th:replace="~{fragments/paginazione :: paginazione(${festivals}, '/?', 'page')}"></div>
+
+        <div class="azioni" th:unless="${festivals.isEmpty()}">
+            <a class="bottone bottone-secondario" href="/festivals">Vedi tutti i festival</a>
+        </div>
+
+		<div class="blocco" th:if="${isAdmin}">
+			<h2>Gestione</h2>
+			<p class="testo-tenue">Riservato agli amministratori</p>
+			<a class="bottone" href="/admin/index">Inserimenti e modifiche</a>
+		</div>
+	</main>
+</body>
+</html>

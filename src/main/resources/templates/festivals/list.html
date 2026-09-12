@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Festival</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+
+	<main class="contenitore">
+		<h1>Festival</h1>
+
+        <div class="azioni" th:if="${isAdmin}">
+            <a class="bottone" href="/admin/festivals/new">Crea un nuovo festival</a>
+        </div>
+
+		<div class="blocco" th:if="${festivals.isEmpty()}">Non ci sono festival nel sistema</div>
+
+		<div class="blocco" th:unless="${festivals.isEmpty()}">
+			<table class="lista">
+				<thead>
+					<tr>
+						<th></th><th>Nome</th><th>Anno</th><th>Citta'</th><th>Periodo</th><th th:if="${isAdmin}"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="festival : ${festivals.content}">
+						<td>
+							<a th:href="@{'/festivals/' + ${festival.id}}">
+								<img class="locandina" style="width: 60px;" alt="locandina"
+									th:src="${festival.posterFileName != null} ? @{'/uploads/' + ${festival.posterFileName}} : @{/images/locandina-placeholder.png}" />
+							</a>
+						</td>
+						<td><a th:href="@{'/festivals/' + ${festival.id}}" th:text="${festival.name}">nome</a></td>
+						<td th:text="${festival.year}">anno</td>
+						<td th:text="${festival.city}">citta'</td>
+						<td th:text="${#temporals.format(festival.startDate, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(festival.endDate, 'dd/MM/yyyy')}">periodo</td>
+						<td th:if="${isAdmin}"><a th:href="@{'/admin/festivals/' + ${festival.id} + '/edit'}">Modifica</a></td>
+						<td th:if="${isAdmin}"><a th:href="@{'/admin/festivals/' + ${festival.id} + '/edit'}">Modifica</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div th:replace="~{fragments/paginazione :: paginazione(${festivals}, '/festivals?', 'page')}"></div>
+
+
+	</main>
+</body>
+</html>

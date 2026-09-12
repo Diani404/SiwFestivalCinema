@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Recensione</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${review.id == null} ? 'Scrivi una recensione' : 'Modifica la tua recensione'">Recensione</h1>
+		<p>Film: <a th:href="@{'/movies/' + ${movie.id}}" th:text="${movie.title}">film</a></p>
+
+		<div class="blocco blocco-stretto">
+			<form class="modulo" method="POST" th:object="${review}"
+				th:action="${review.id == null} ? @{'/movies/' + ${movie.id} + '/reviews'} : @{'/reviews/' + ${review.id}}">
+				<div class="error" th:if="${#fields.hasGlobalErrors()}">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">errore</p>
+				</div>
+				<div class="campo">
+					<label>Voto (1-10)</label>
+					<input type="number" min="1" max="10" th:field="*{rating}" />
+					<span class="error" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></span>
+				</div>
+				<div class="campo">
+					<label>Testo</label>
+					<textarea rows="6" th:field="*{text}"></textarea>
+					<span class="error" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span>
+				</div>
+				<div class="campo">
+					<button type="submit">Salva</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

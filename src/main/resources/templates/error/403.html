@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Accesso negato</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<main class="contenitore pagina-errore">
+		<a href="/"><img src="/images/logo.png" alt="Festival Cinematografici" style="max-width: 320px;" /></a>
+		<div class="blocco blocco-stretto">
+			<h1>Accesso negato</h1>
+			<p th:text="${errorMessage != null} ? ${errorMessage} : 'Non hai i permessi per accedere a questa pagina. (403)'"></p>
+			<a class="bottone" href="/">Torna alla home</a>
+		</div>
+	</main>
+</body>
+</html>

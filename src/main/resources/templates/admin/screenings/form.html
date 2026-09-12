@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Proiezione</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${screening.id == null} ? 'Programma una proiezione' : 'Modifica proiezione'">Proiezione</h1>
+		<p>
+			Festival: <a th:href="@{'/festivals/' + ${festival.id}}" th:text="${festival.name + ' ' + festival.year}">festival</a>
+			<span class="testo-tenue">
+				(dal <span th:text="${#temporals.format(festival.startDate, 'dd/MM/yyyy')}">inizio</span>
+				al <span th:text="${#temporals.format(festival.endDate, 'dd/MM/yyyy')}">fine</span>)
+			</span>
+		</p>
+
+		<div class="blocco blocco-stretto">
+			<form class="modulo" method="POST" th:object="${screening}"
+				th:action="${screening.id == null} ? @{'/admin/festivals/' + ${festival.id} + '/screenings'} : @{'/admin/screenings/' + ${screening.id}}">
+				<div class="error" th:if="${#fields.hasGlobalErrors()}">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">errore</p>
+				</div>
+				<div class="campo" th:if="${screening.id == null}">
+					<label>Film</label>
+					<select th:field="*{movie}">
+						<option value="">Seleziona un film</option>
+						<option th:each="m : ${movies}" th:value="${m.id}" th:text="${m.title + ' (' + m.duration + ' min)'}">film</option>
+					</select>
+					<span class="error" th:if="${#fields.hasErrors('movie')}" th:errors="*{movie}"></span>
+				</div>
+				<div class="campo" th:if="${screening.id != null}">
+					<input type="hidden" th:field="*{movie}" />
+					<label>Film</label>
+					<span th:text="${movie.title}">film</span>
+				</div>
+				<div class="campo">
+					<label>Sala</label>
+					<select th:field="*{room}">
+						<option value="">Seleziona una sala</option>
+						<option th:each="r : ${rooms}" th:value="${r.id}" th:text="${r.name + ' (' + r.capacity + ' posti)'}">sala</option>
+					</select>
+					<span class="error" th:if="${#fields.hasErrors('room')}" th:errors="*{room}"></span>
+				</div>
+				<div class="campo">
+					<label>Data</label>
+					<input type="date" th:field="*{date}" />
+					<span class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
+				</div>
+				<div class="campo">
+					<label>Ora</label>
+					<input type="time" th:field="*{time}" />
+					<span class="error" th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></span>
+				</div>
+				<div class="campo">
+					<label>Stato</label>
+					<select th:field="*{status}">
+						<option th:each="st : ${statuses}" th:value="${st}" th:text="#{${'status.' + st}}">stato</option>
+					</select>
+				</div>
+				<div class="campo">
+					<button type="submit">Conferma</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

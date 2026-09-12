@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Le mie recensioni</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1>Le mie recensioni</h1>
+
+		<div class="blocco" th:if="${reviews.isEmpty()}">Non hai ancora scritto recensioni</div>
+
+		<div class="blocco" th:unless="${reviews.isEmpty()}">
+			<div class="recensione" th:each="review : ${reviews.content}">
+				<div class="recensione-testata">
+					<a th:href="@{'/movies/' + ${review.movie.id}}" th:text="${review.movie.title}">film</a>
+					<span class="testo-tenue"> - <span th:text="${#temporals.format(review.date, 'dd/MM/yyyy')}">data</span></span>
+					<span class="voto"> <span th:text="${review.rating}">voto</span>/10</span>
+				</div>
+				<p th:text="${review.text}">testo</p>
+				<div class="azioni">
+					<a class="bottone bottone-secondario bottone-piccolo" th:href="@{'/reviews/' + ${review.id} + '/edit'}">Modifica</a>
+					<form th:action="@{'/reviews/' + ${review.id} + '/delete'}" method="POST">
+						<button type="submit" class="bottone-pericolo bottone-piccolo">Elimina</button>
+					</form>
+				</div>
+			</div>
+			<div th:replace="~{fragments/paginazione :: paginazione(${reviews}, '/reviews?', 'page')}"></div>
+		</div>
+	</main>
+</body>
+</html>

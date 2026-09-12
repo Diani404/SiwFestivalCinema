@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Programma interattivo</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+	<link rel="stylesheet" th:href="@{/react/program.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1>Programma delle proiezioni</h1>
+		<p>
+			<a th:href="@{'/festivals/' + ${festival.id}}" th:text="${festival.name + ' ' + festival.year}">festival</a>
+			<span class="testo-tenue"> - </span>
+			<a th:href="@{'/festivals/' + ${festival.id} + '/screenings'}">versione senza JavaScript</a>
+		</p>
+
+		<div class="blocco">
+			<!-- da data-festival-id chiama le api -->
+			<div id="root" th:attr="data-festival-id=${festival.id}"></div>
+			<noscript>
+				<p>Questa pagina richiede JavaScript.</p>
+			</noscript>
+		</div>
+	</main>
+	<script type="module" src="/react/program.js"></script>
+</body>
+</html>

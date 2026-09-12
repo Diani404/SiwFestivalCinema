@@ -1,0 +1,605 @@
+/*FONT*/
+
+
+@font-face {
+    font-family: "Staatliches";
+    src: url("/fonts/Staatliches-Regular.ttf") format("truetype");
+}
+
+/*
+@font-face {
+    font-family: "Helvetica Neue";
+    font-weight: 300;
+    src: url("/fonts/HelveticaNeue-Light.ttf") format("truetype");
+}
+*/
+
+/* "set" """vartiabili colori*/
+:root {
+    --bordeaux: #6e1423;
+    --bordeaux-scuro: #4a0d18;
+    --bordeaux-chiaro: #8f1d31;
+    --bordeaux-trasparente: rgba(110, 20, 35, 0.82);
+    --oro: #e0b25a;
+    --testo: #f4ecec;
+    --testo-tenue: rgba(244, 236, 236, 0.72);
+    --riga: rgba(255, 255, 255, 0.14);
+    --font-titoli: "Staatliches", "Arial Narrow", sans-serif;
+    --font-testo: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-testo);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--testo);
+    /* sfondo: sostituisci static/images/sfondo.jpg con la tua immagine.
+       cover = riempie sempre tutta la finestra, fixed = resta fermo quando scorri */
+    background: var(--bordeaux-scuro) url("/images/sfondo.jpg") center center / cover no-repeat fixed;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-titoli);
+    font-weight: normal;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+    margin: 0 0 0.5em 0;
+}
+
+h1 { font-size: 2.8em; }
+h2 { font-size: 2em; }
+h3 { font-size: 1.5em; }
+h4 { font-size: 1.2em; }
+
+p {
+    margin: 0 0 1em 0;
+}
+
+a {
+    color: var(--oro);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+strong {
+    font-weight: 600;
+    color: var(--oro);
+}
+
+/* header + nav */
+
+.intestazione {
+    background-color: var(--bordeaux);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+.intestazione-riga {
+    display: flex;
+    align-items: center;
+    padding: 0.8em 1.5em;
+}
+
+/* le due colonne laterali sono larghe uguali, cosi' il logo resta al centro esatto */
+.intestazione-sx, .intestazione-dx {
+    flex: 1;
+}
+
+.intestazione-dx {
+    text-align: right;
+}
+
+.intestazione-logo img {
+    display: block;
+    max-height: 90px;
+    max-width: 320px;
+}
+
+.utente {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1em;
+    font-size: 0.9em;
+}
+
+.utente a {
+    color: var(--testo);
+}
+
+.utente form {
+    margin: 0;
+}
+
+.navigazione {
+    background-color: var(--bordeaux-scuro);
+    text-align: center;
+    padding: 0.55em 1em;
+}
+
+.navigazione a {
+    font-family: var(--font-titoli);
+    font-size: 1.15em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--testo);
+    margin: 0 1em;
+}
+
+.navigazione a:hover {
+    color: var(--oro);
+    text-decoration: none;
+}
+
+/* contenitore e contenuto */
+
+.contenitore {
+    max-width: 1000px;
+    margin: 2em auto 3em auto;
+    padding: 0 1em;
+    text-align: center;
+}
+
+.contenitore > h1 {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* blocco semitrasparente del colore principale */
+.blocco {
+    background-color: var(--bordeaux-trasparente);
+    border-radius: 10px;
+    padding: 1.5em 2em;
+    margin-bottom: 1.5em;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.blocco-stretto {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.testo-tenue {
+    color: var(--testo-tenue);
+}
+
+.azioni {
+    margin-top: 1em;
+}
+
+.azioni a, .azioni form {
+    display: inline-block;
+    margin: 0.3em 0.6em;
+}
+
+/* scheda festival  */
+
+.scheda-festival {
+    display: flex;
+    gap: 1.5em;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.scheda-festival h3 {
+    margin-top: 0;
+}
+
+.locandina {
+    width: 140px;
+    aspect-ratio: 2 / 3;   /* proporzione fissa */
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.locandina-grande {
+    width: 240px;
+}
+
+.scheda-festival .dettagli {
+    flex: 1;
+}
+
+/* liste/tabelle */
+
+.lista {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.lista th {
+    font-family: var(--font-titoli);
+    font-weight: normal;
+    font-size: 1.1em;
+    letter-spacing: 0.08em;
+    color: var(--oro);
+    padding: 0.5em 0.8em;
+    border-bottom: 1px solid var(--riga);
+}
+
+.lista td {
+    padding: 0.7em 0.8em;
+    border-bottom: 1px solid var(--riga);
+    vertical-align: middle;
+}
+
+.lista tr:last-child td {
+    border-bottom: none;
+}
+
+.lista tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.lista form {
+    display: inline;
+    margin: 0;
+}
+
+/* elenchi semplici */
+.elenco {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.elenco li {
+    padding: 0.5em 0;
+    border-bottom: 1px solid var(--riga);
+}
+
+.elenco li:last-child {
+    border-bottom: none;
+}
+
+/* stato proiezioni */
+
+.stato {
+    display: inline-block;
+    padding: 0.15em 0.75em;
+    border-radius: 1em;
+    font-size: 0.85em;
+    letter-spacing: 0.03em;
+}
+
+.stato-scheduled {
+    background-color: rgba(255, 205, 60, 0.35);
+}
+
+.stato-cancelled {
+    background-color: rgba(230, 50, 50, 0.45);
+}
+
+.stato-completed {
+    background-color: rgba(70, 190, 100, 0.4);
+}
+
+/* form */
+
+.modulo {
+    display: inline-block;
+    width: 100%;
+    max-width: 460px;
+    text-align: left;
+}
+
+.modulo-inline {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1em;
+    flex-wrap: wrap;
+    margin-bottom: 1.5em;
+}
+
+.campo {
+    margin-bottom: 1.1em;
+}
+
+.campo label {
+    display: block;
+    font-family: var(--font-titoli);
+    font-size: 1.1em;
+    letter-spacing: 0.06em;
+    color: var(--oro);
+    margin-bottom: 0.3em;
+}
+
+.modulo-inline .campo {
+    margin-bottom: 0;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.55em 0.7em;
+    border: 1px solid var(--riga);
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.28);
+    color: var(--testo);
+    font: inherit;
+}
+
+.modulo-inline input, .modulo-inline select {
+    width: auto;
+    min-width: 12em;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--oro);
+    outline-offset: 1px;
+}
+
+select option {
+    color: #222222;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="date"], input[type="time"] {
+    color-scheme: dark;   /* icone del calendario chiare sullo sfondo scuro */
+}
+
+/* bottoni */
+
+.bottone, button {
+    font-family: var(--font-titoli);
+    font-size: 1.05em;
+    letter-spacing: 0.08em;
+    background-color: var(--oro);
+    color: var(--bordeaux-scuro);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5em 1.4em;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bottone:hover, button:hover {
+    background-color: #f0c67a;
+    text-decoration: none;
+}
+
+.bottone-secondario {
+    background-color: transparent;
+    color: var(--oro);
+    border: 1px solid var(--oro);
+}
+
+.bottone-secondario:hover {
+    background-color: rgba(224, 178, 90, 0.15);
+}
+
+.bottone-pericolo {
+    background-color: transparent;
+    color: #ffb3b3;
+    border: 1px solid #ffb3b3;
+}
+
+.bottone-pericolo:hover {
+    background-color: rgba(230, 50, 50, 0.3);
+}
+
+.bottone-piccolo {
+    font-size: 0.9em;
+    padding: 0.3em 0.9em;
+}
+
+.error {
+    display: block;
+    color: #ffb3b3;
+    font-size: 0.9em;
+    margin-top: 0.3em;
+}
+
+/* recensioni */
+
+.recensione {
+    text-align: left;
+    padding: 1em 0;
+    border-bottom: 1px solid var(--riga);
+}
+
+.recensione:last-child {
+    border-bottom: none;
+}
+
+.recensione-testata {
+    margin-bottom: 0.4em;
+}
+
+.voto {
+    font-family: var(--font-titoli);
+    font-size: 1.2em;
+    color: var(--oro);
+    letter-spacing: 0.05em;
+}
+
+/* errore */
+
+.pagina-errore {
+    margin-top: 5em;
+}
+
+/* smartphone view */
+
+@media (max-width: 700px) {
+    .intestazione-riga {
+        flex-direction: column;
+        gap: 0.6em;
+    }
+
+    .intestazione-dx {
+        text-align: center;
+    }
+
+    .utente {
+        justify-content: center;
+    }
+
+    .scheda-festival {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .blocco {
+        padding: 1em;
+    }
+
+    h1 { font-size: 2.1em; }
+}
+
+/* griglia homepage */
+
+.griglia {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5em;
+    margin-bottom: 1.5em;
+    justify-content: center;
+}
+
+.riquadro {
+    display: block;
+    text-align: center;
+    color: var(--testo);
+    padding: 1.2em;
+}
+
+.riquadro:hover {
+    background-color: var(--bordeaux-chiaro);
+    text-decoration: none;
+}
+
+.riquadro h3 {
+    color: var(--oro);
+    margin: 0.6em 0 0.3em 0;
+}
+
+.riquadro .locandina {
+    width: 100%;
+    max-width: 180px;
+}
+
+.riquadro p {
+    font-size: 0.9em;
+    margin-bottom: 0;
+}
+
+/* due colonne sugli schermi medi una sola sul telefono */
+@media (max-width: 900px) {
+    .griglia {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .griglia {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* password */
+
+.campo-password {
+    position: relative;
+}
+
+.campo-password input {
+    padding-right: 2.8em;   /* spazio per non far finire il testo sotto l'occhio */
+}
+
+.occhio {
+    position: absolute;
+    top: 50%;
+    right: 0.5em;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0 0.3em;
+    font-size: 1.2em;
+    line-height: 1;
+    color: var(--testo-tenue);
+    cursor: pointer;
+}
+
+.occhio:hover {
+    background: none;
+    color: var(--oro);
+}
+
+
+.occhio-attivo {
+    color: var(--oro);
+}
+
+/* paginazione */
+
+.paginazione {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    flex-wrap: wrap;
+    margin: 0 0 1.5em 0;
+}
+
+.conteggio-pagine {
+    font-size: 0.9em;
+    color: var(--testo-tenue);
+}
+
+.disabilitato {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* icona utente */
+.nome-utente {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+}
+
+.icona-utente {
+    width: 1.15em;
+    height: 1.15em;
+}
+
+/* admin */
+
+.testata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.2em;
+    flex-wrap: wrap;
+    margin-bottom: 1.2em;
+}
+
+.testata h1 {
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}

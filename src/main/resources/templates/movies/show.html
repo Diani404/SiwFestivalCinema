@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title th:text="'SiwFestival - ' + ${movie.title}">Film</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${movie.title}">Titolo</h1>
+
+		<div class="blocco">
+			<p>
+				<strong>Regista:</strong>
+				<a th:href="@{'/directors/' + ${movie.director.id}}" th:text="${movie.director.fullName}">regista</a><br />
+				<strong>Anno:</strong> <span th:text="${movie.year}">anno</span><br />
+				<strong>Durata:</strong> <span th:text="${movie.duration}">durata</span> min<br />
+				<strong>Genere:</strong> <span th:text="${movie.genre}">genere</span><br />
+				<strong>Paese di produzione:</strong> <span th:text="${movie.productionCountry}">paese</span>
+			</p>
+			<p class="voto" th:if="${averageRating != null}">
+				Voto medio: <span th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">media</span>/10
+			</p>
+			<div class="azioni" th:if="${isAdmin}">
+				<a th:href="@{'/admin/movies/' + ${movie.id} + '/edit'}">Modifica film</a>
+			</div>
+		</div>
+
+		<div class="blocco">
+			<h2>Festival</h2>
+			<div th:if="${festivals.isEmpty()}">Non partecipa a nessun festival</div>
+			<ul class="elenco">
+				<li th:each="festival : ${festivals.content}">
+					<a th:href="@{'/festivals/' + ${festival.id}}" th:text="${festival.name + ' ' + festival.year}">festival</a>
+				</li>
+			</ul>
+			<div th:replace="~{fragments/paginazione :: paginazione(${festivals}, '/movies/' + ${movie.id} + '?', 'paginaFestival')}"></div>
+		</div>
+
+		<div class="blocco">
+			<h2>Proiezioni</h2>
+			<div th:if="${screenings.isEmpty()}">Nessuna proiezione programmata</div>
+			<table class="lista" th:unless="${screenings.isEmpty()}">
+				<thead>
+					<tr>
+						<th>Festival</th><th>Data</th><th>Ora</th><th>Sala</th><th>Stato</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="s : ${screenings.content}">
+						<td><a th:href="@{'/festivals/' + ${s.festival.id}}" th:text="${s.festival.name}">festival</a></td>
+						<td th:text="${#temporals.format(s.date, 'dd/MM/yyyy')}">data</td>
+						<td th:text="${#temporals.format(s.time, 'HH:mm')}">ora</td>
+						<td th:text="${s.room.name}">sala</td>
+						<td><span class="stato" th:classappend="'stato-' + ${#strings.toLowerCase(s.status)}" th:text="#{${'status.' + s.status}}">stato</span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div th:replace="~{fragments/paginazione :: paginazione(${screenings}, '/movies/' + ${movie.id} + '?', 'paginaProiezioni')}"></div>
+		</div>
+
+		<div class="blocco">
+			<h2>Recensioni</h2>
+			<p th:if="${userDetails == null}"><a href="/login">Accedi</a> per scrivere una recensione</p>
+			<p th:if="${canReview}"><a class="bottone" th:href="@{'/movies/' + ${movie.id} + '/reviews/new'}">Scrivi una recensione</a></p>
+			<p th:if="${userDetails != null and !canReview}" class="testo-tenue">Hai gia' recensito questo film: <a href="/reviews">le mie recensioni</a></p>
+			<div th:if="${reviews.isEmpty()}">Ancora nessuna recensione</div>
+			<div class="recensione" th:each="review : ${reviews.content}">
+				<div class="recensione-testata">
+					<strong th:text="${review.user.fullName}">autore</strong>
+					<span class="testo-tenue"> - <span th:text="${#temporals.format(review.date, 'dd/MM/yyyy')}">data</span></span>
+					<span class="voto"> <span th:text="${review.rating}">voto</span>/10</span>
+				</div>
+				<p th:text="${review.text}">testo</p>
+			</div>
+			<div th:replace="~{fragments/paginazione :: paginazione(${reviews}, '/movies/' + ${movie.id} + '?', 'paginaRecensioni')}"></div>
+		</div>
+	</main>
+</body>
+</html>

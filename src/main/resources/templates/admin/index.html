@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SiwFestival - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="contenitore">
+    <h1>Gestione</h1>
+    <p class="testo-tenue">Riservato agli amministratori</p>
+
+    <div class="griglia">
+        <a class="blocco riquadro" href="/admin/festivals/new">
+            <h3>Festival</h3>
+            <p class="testo-tenue">Crea un nuovo festival. Film e proiezioni si gestiscono dalla pagina del festival.</p>
+        </a>
+        <a class="blocco riquadro" href="/admin/movies/new">
+            <h3>Film</h3>
+            <p class="testo-tenue">Aggiungi un film al catalogo.</p>
+        </a>
+        <a class="blocco riquadro" href="/admin/directors/new">
+            <h3>Registi</h3>
+            <p class="testo-tenue">Aggiungi un regista.</p>
+        </a>
+        <a class="blocco riquadro" href="/admin/rooms">
+            <h3>Sale</h3>
+            <p class="testo-tenue">Elenco delle sale, inserimento e modifica.</p>
+        </a>
+    </div>
+</main>
+</body>
+</html>

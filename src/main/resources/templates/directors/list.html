@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Registi</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1>Registi</h1>
+
+        <div class="azioni" th:if="${isAdmin}">
+            <a class="bottone" href="/admin/directors/new">Aggiungi un regista</a>
+        </div>
+
+		<div class="blocco" th:if="${directors.isEmpty()}">Non ci sono registi nel sistema</div>
+
+		<div class="blocco" th:unless="${directors.isEmpty()}">
+			<table class="lista">
+				<thead>
+					<tr>
+						<th>Nome</th><th>Nazionalita'</th><th>Data di nascita</th><th th:if="${isAdmin}"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="director : ${directors.content}">
+						<td><a th:href="@{'/directors/' + ${director.id}}" th:text="${director.fullName}">nome</a></td>
+						<td th:text="${director.nationality}">nazionalita'</td>
+						<td th:text="${#temporals.format(director.dateOfBirth, 'dd/MM/yyyy')}">data</td>
+						<td th:if="${isAdmin}"><a th:href="@{'/admin/directors/' + ${director.id} + '/edit'}">Modifica</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div th:replace="~{fragments/paginazione :: paginazione(${directors}, '/directors?', 'page')}"></div>
+
+
+	</main>
+</body>
+</html>

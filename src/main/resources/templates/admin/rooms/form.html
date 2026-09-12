@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Sala</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${room.id == null} ? 'Aggiungi una sala' : 'Modifica sala'">Sala</h1>
+
+		<div class="blocco blocco-stretto">
+			<form class="modulo" th:action="@{/admin/rooms}" method="POST" th:object="${room}">
+				<input type="hidden" th:field="*{id}" />
+				<div class="campo">
+					<label>Nome</label>
+					<input type="text" th:field="*{name}" />
+					<span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+				</div>
+				<div class="campo">
+					<label>Indirizzo</label>
+					<input type="text" th:field="*{address}" />
+					<span class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+				</div>
+				<div class="campo">
+					<label>Capienza</label>
+					<input type="text" th:field="*{capacity}" />
+					<span class="error" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>
+				</div>
+				<div class="campo">
+					<button type="submit">Conferma</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

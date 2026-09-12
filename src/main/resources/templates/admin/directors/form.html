@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Regista</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${director.id == null} ? 'Aggiungi un regista' : 'Modifica regista'">Regista</h1>
+
+		<div class="blocco blocco-stretto">
+			<form class="modulo" th:action="@{/admin/directors}" method="POST" th:object="${director}">
+				<input type="hidden" th:field="*{id}" />
+				<div class="campo">
+					<label>Nome</label>
+					<input type="text" th:field="*{name}" />
+					<span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+				</div>
+				<div class="campo">
+					<label>Cognome</label>
+					<input type="text" th:field="*{surname}" />
+					<span class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+				</div>
+				<div class="campo">
+					<label>Data di nascita</label>
+					<input type="date" th:field="*{dateOfBirth}" />
+					<span class="error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
+				</div>
+				<div class="campo">
+					<label>Nazionalita'</label>
+					<input type="text" th:field="*{nationality}" />
+					<span class="error" th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"></span>
+				</div>
+				<div class="campo">
+					<button type="submit">Conferma</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

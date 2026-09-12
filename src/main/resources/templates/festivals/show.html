@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title th:text="'SiwFestival - ' + ${festival.name}">Festival</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1 th:text="${festival.name + ' ' + festival.year}">Festival</h1>
+
+		<div class="blocco scheda-festival">
+			<img class="locandina locandina-grande" alt="locandina"
+				th:src="${festival.posterFileName != null} ? @{'/uploads/' + ${festival.posterFileName}} : @{/images/locandina-placeholder.png}" />
+			<div class="dettagli">
+				<p>
+					<strong>Citta':</strong> <span th:text="${festival.city}">citta'</span><br />
+					<strong>Periodo:</strong>
+					<span th:text="${#temporals.format(festival.startDate, 'dd/MM/yyyy')}">inizio</span> -
+					<span th:text="${#temporals.format(festival.endDate, 'dd/MM/yyyy')}">fine</span>
+				</p>
+				<p th:text="${festival.description}">descrizione</p>
+				<div class="azioni">
+					<a class="bottone" th:href="@{'/festivals/' + ${festival.id} + '/screenings'}">Programma delle proiezioni</a>
+					<a class="bottone bottone-secondario" th:href="@{'/festivals/' + ${festival.id} + '/program'}">Programma interattivo</a>
+				</div>
+				<div class="azioni" th:if="${isAdmin}">
+					<a th:href="@{'/admin/festivals/' + ${festival.id} + '/edit'}">Modifica festival</a>
+					<a th:href="@{'/admin/festivals/' + ${festival.id} + '/movies'}">Gestisci film</a>
+					<a th:href="@{'/admin/festivals/' + ${festival.id} + '/screenings'}">Gestisci proiezioni</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="blocco">
+			<h2>Film partecipanti</h2>
+			<div th:if="${movies.isEmpty()}">Nessun film associato a questo festival</div>
+			<table class="lista" th:unless="${movies.isEmpty()}">
+				<thead>
+					<tr>
+						<th>Titolo</th><th>Anno</th><th>Regista</th><th>Genere</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="movie : ${movies.content}">
+						<td><a th:href="@{'/movies/' + ${movie.id}}" th:text="${movie.title}">titolo</a></td>
+						<td th:text="${movie.year}">anno</td>
+						<td><a th:href="@{'/directors/' + ${movie.director.id}}" th:text="${movie.director.fullName}">regista</a></td>
+						<td th:text="${movie.genre}">genere</td>
+					</tr>
+				</tbody>
+			</table>
+			<div th:replace="~{fragments/paginazione :: paginazione(${movies}, '/festivals/' + ${festival.id} + '?', 'page')}"></div>
+		</div>
+	</main>
+</body>
+</html>

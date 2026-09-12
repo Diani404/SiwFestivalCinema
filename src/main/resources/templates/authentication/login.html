@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Login</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1>Login</h1>
+
+		<div class="blocco blocco-stretto">
+			<form class="modulo" th:action="@{/login}" method="POST">
+				<div class="campo">
+					<label>Username</label>
+					<input name="username" type="text" required />
+				</div>
+				<div class="campo">
+					<label>Password</label>
+					<div class="campo-password">
+						<input id="password" name="password" type="password" required />
+						<button id="mostraPassword" type="button" class="occhio" title="Mostra la password">&#128065;</button>
+					</div>
+					<span class="error" th:if="${param.error != null}">Username o password errati</span>
+				</div>
+				<div class="campo">
+					<button type="submit">Login</button>
+				</div>
+			</form>
+			<p class="testo-tenue">Non hai un account? <a th:href="@{/register}">Registrati</a></p>
+		</div>
+	</main>
+
+	<script>
+		// x occhio
+		var campoPassword = document.getElementById("password");
+		var bottoneOcchio = document.getElementById("mostraPassword");
+
+		bottoneOcchio.addEventListener("click", function () {
+			var nascosta = campoPassword.type === "password";
+			campoPassword.type = nascosta ? "text" : "password";
+			bottoneOcchio.classList.toggle("occhio-attivo", nascosta);
+			bottoneOcchio.title = nascosta ? "Nascondi la password" : "Mostra la password";
+		});
+	</script>
+</body>
+</html>

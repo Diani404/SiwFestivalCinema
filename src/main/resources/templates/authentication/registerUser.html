@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Registrazione</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1>Registrazione nuovo utente</h1>
+
+		<div class="blocco blocco-stretto">
+			<form class="modulo" th:action="@{/register}" method="POST">
+				<div class="campo">
+					<label>Nome</label>
+					<input type="text" required th:field="${user.name}" />
+					<span class="error" th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}"></span>
+				</div>
+				<div class="campo">
+					<label>Cognome</label>
+					<input type="text" required th:field="${user.surname}" />
+					<span class="error" th:if="${#fields.hasErrors('user.surname')}" th:errors="${user.surname}"></span>
+				</div>
+				<div class="campo">
+					<label>Email</label>
+					<input type="text" required th:field="${user.email}" />
+					<span class="error" th:if="${#fields.hasErrors('user.email')}" th:errors="${user.email}"></span>
+				</div>
+				<div class="campo">
+					<label>Username</label>
+					<input type="text" required th:field="${credentials.username}" />
+					<span class="error" th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}"></span>
+				</div>
+				<div class="campo">
+					<label>Password</label>
+					<input type="password" required th:field="${credentials.password}" />
+					<span class="error" th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}"></span>
+				</div>
+				<div class="campo">
+					<button type="submit">Registrati</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

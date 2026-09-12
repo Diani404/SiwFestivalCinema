@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="paginazione(pagina, baseUrl, parametro)" class="paginazione" th:if="${pagina.totalPages > 1}">
+		<a th:if="${!pagina.first}" class="bottone bottone-secondario bottone-piccolo"
+			th:href="${baseUrl + parametro + '=' + (pagina.number - 1)}">&#8249; Precedente</a>
+		<span th:unless="${!pagina.first}" class="bottone bottone-secondario bottone-piccolo disabilitato">&#8249; Precedente</span>
+
+		<span class="conteggio-pagine">
+			Pagina <span th:text="${pagina.number + 1}">1</span> di <span th:text="${pagina.totalPages}">1</span>
+			(<span th:text="${pagina.totalElements}">0</span> elementi)
+		</span>
+
+		<a th:if="${!pagina.last}" class="bottone bottone-secondario bottone-piccolo"
+			th:href="${baseUrl + parametro + '=' + (pagina.number + 1)}">Successiva &#8250;</a>
+		<span th:unless="${!pagina.last}" class="bottone bottone-secondario bottone-piccolo disabilitato">Successiva &#8250;</span>
+	</div>
+</body>
+</html>

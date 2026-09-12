@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SiwFestival - Programma</title>
+	<link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+	<main class="contenitore">
+		<h1>Programma delle proiezioni</h1>
+		<p><a th:href="@{'/festivals/' + ${festival.id}}" th:text="${festival.name + ' ' + festival.year}">festival</a></p>
+
+		<div class="blocco">
+			<form class="modulo-inline" th:action="@{'/festivals/' + ${festival.id} + '/screenings'}" method="GET">
+				<div class="campo">
+					<label>Giorno</label>
+					<select name="date">
+						<option value="">Tutte le date</option>
+						<option th:each="d : ${dates}" th:value="${d}" th:text="${#temporals.format(d, 'dd/MM/yyyy')}"
+							th:selected="${d.equals(selectedDate)}">data</option>
+					</select>
+				</div>
+				<button type="submit">Filtra</button>
+			</form>
+
+			<div th:if="${screenings.isEmpty()}">Nessuna proiezione in programma</div>
+			<table class="lista" th:unless="${screenings.isEmpty()}">
+				<thead>
+					<tr>
+						<th>Data</th><th>Ora</th><th>Film</th><th>Regista</th><th>Sala</th><th>Stato</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="s : ${screenings.content}">
+						<td th:text="${#temporals.format(s.date, 'dd/MM/yyyy')}">data</td>
+						<td th:text="${#temporals.format(s.time, 'HH:mm')}">ora</td>
+						<td><a th:href="@{'/movies/' + ${s.movie.id}}" th:text="${s.movie.title}">film</a></td>
+						<td th:text="${s.movie.director.fullName}">regista</td>
+						<td th:text="${s.room.name}">sala</td>
+						<td><span class="stato" th:classappend="'stato-' + ${#strings.toLowerCase(s.status)}" th:text="#{${'status.' + s.status}}">stato</span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div th:replace="~{fragments/paginazione :: paginazione(${screenings}, '/festivals/' + ${festival.id} + '/screenings?date=' + ${selectedDate != null ? selectedDate : ''} + '&amp;', 'page')}"></div>
+		</div>
+	</main>
+</body>
+</html>
